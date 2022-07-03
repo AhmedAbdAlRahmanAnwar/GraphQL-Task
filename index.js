@@ -42,7 +42,8 @@ const resolvers = {
             return newPost;
         },
         deletePost: (_,{id}) => {
-            
+            const index = posts.findIndex(post => post.id == id);
+            posts.splice(index, 1);
             return posts
         }
     }
