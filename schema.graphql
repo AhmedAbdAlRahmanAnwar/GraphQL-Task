@@ -1,21 +1,31 @@
-  type Comment {
-    description: String
-  }
+type Post{
+    id:ID!
+    title: String!
+    text: String!
+    comments: [Comment!]!
+}
 
-  type Post {
-    id: ID
+type Comment{
+    id: ID!
+    content: String!
+    postId: ID!
+}
+
+input NewPostContent {
     title: String
     text: String
-    comment: Comment
-  }
+}
 
-  type Query {
-    post(id:ID): Post
+type Query{
     posts: [Post]
-  }
+    post(id:ID!) : Post
+    comments(postId: ID!): [Comment]
+    comment(commentId: ID!): Comment
+}
 
-  type Mutation {
-    createPost(id:ID,title: String,text: String): Post
-    deletePost(id:ID): [Post]
-    updatePost(id:ID,title: String,text: String): Post
-  }
+type Mutation{
+    createPost(title: String!, text: String!): Post!
+    updatePost(id:ID!, content: NewPostContent!): Post!
+    deletePost(id:ID!): Boolean!
+    addComment(postId: ID!, content: String!) : [Comment]
+}

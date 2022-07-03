@@ -1,67 +1,33 @@
+require("dotenv/config");
 const { ApolloServer, gql } = require('apollo-server');
+const PostDataSource = require("./datasource/post");
+const CommentDataSource = require("./datasource/comment");
+const resolvers = require("./resolvers/index");
 const fs = require('fs');
 const path = require('path');
+const mongoose = require('mongoose');
 
 
-const postSchema = fs.readFileSync(path.join(__dirname, 'schema.graphql'),"utf-8")
-const typeDefs = gql(postSchema);
+mongoose.connect(process.env.MONGO_URL)
+    .then(() => {
+        console.log("DB connected successfully");
+        server.listen().then(({ url }) => {
+            console.log(`Server ready at ${url}`);
+        });
+    })
+    .catch(error => console.log("DB connection error " + error));
 
-
-const posts = [
-    {
-        id:1,
-        title: 'The Awakening',
-        text: 'lorem ipsum dolor sit amet, consectetur adip',
-    },
-    {
-        id:2,
-        title: 'City of Glass',
-        text: 'lorem ipsum dolor sit amet, consectetur adip',
-    },
-    {
-        id:3,
-        title: 'Glass Doors',
-        text: 'lorem ipsum dolor sit amet, consectetur adip',
-    },
-];
-
-
-const resolvers = {
-    Query: {
-        post: (_,{id}) => {
-            return posts.find(post => post.id == id);
-        },
-        posts: (_) => {
-            return posts;
-        },
-    },
-    Mutation:{
-        createPost: (_,{id,title,text}) => {
-            const newPost = {id,title,text};
-            posts.push(newPost);
-            return newPost;
-        },
-        deletePost: (_,{id}) => {
-            const index = posts.findIndex(post => post.id == id);
-            posts.splice(index, 1);
-            return posts
-        },
-        updatePost: (_,{id,title,text}) => {
-            const post = posts.find(post => post.id == id);
-            post.title = title;
-            post.text = text;
-            return post;
-        }
-    }
-};
+const schemaData = fs.readFileSync(path.join(__dirname, 'schema.graphql'),"utf-8")
+const typeDefs = gql(schemaData);
 
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-});
-
-// The `listen` method launches a web server.
-server.listen().then(({ url }) => {
-    console.log(`🚀  Server ready at ${url}`);
+    dataSources(){
+        return{
+            post : new PostDataSource(),
+            comment : new CommentDataSource(),
+        }
+    }
 });
