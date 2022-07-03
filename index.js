@@ -47,7 +47,7 @@ const resolvers = {
             return posts
         },
         updatePost: (_,{id,title,text}) => {
-            const post = posts.filter(post => post.id == id);
+            const post = posts.find(post => post.id == id);
             post.title = title;
             post.text = text;
             return post;

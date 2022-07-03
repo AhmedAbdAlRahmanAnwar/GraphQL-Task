@@ -1,7 +1,12 @@
+  type Comment {
+    description: String
+  }
+
   type Post {
     id: ID
     title: String
     text: String
+    comment: Comment
   }
 
   type Query {
