@@ -6,4 +6,10 @@
 
   type Query {
     post(id:ID): Post
+    posts: [Post]
+  }
+
+  type Mutation {
+    createPost(id:ID,title: String,text: String): Post
+    deletePost(id:ID): [Post]
   }

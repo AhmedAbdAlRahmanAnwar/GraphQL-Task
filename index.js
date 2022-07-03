@@ -31,17 +31,28 @@ const resolvers = {
         post: (_,{id}) => {
             return posts.find(post => post.id == id);
         },
+        posts: (_) => {
+            return posts;
+        },
     },
+    Mutation:{
+        createPost: (_,{id,title,text}) => {
+            const newPost = {id,title,text};
+            posts.push(newPost);
+            return newPost;
+        },
+        deletePost: (_,{id}) => {
+            
+            return posts
+        }
+    }
 };
-
 
 
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    csrfPrevention: true,
-    cache: 'bounded',
 });
 
 // The `listen` method launches a web server.
