@@ -6,8 +6,8 @@ class CommentDataSource extends DataSource {
         this.context = config.context;
     }
 
-    create(postData) {
-        return Comment.create(postData);
+    create(commentContent) {
+        return Comment.create(commentContent);
     }
 
     async getAllComments(postId) {
@@ -18,14 +18,14 @@ class CommentDataSource extends DataSource {
         return Comment.findById(id);
     }
 
-    delete(postID) {
-        Comment.findByIdAndDelete(postID)
+    delete(commentId) {
+        Comment.findByIdAndDelete(commentId)
             .then(() => true)
             .catch(() => false);
     }
 
-    async update(postID, newComment) {
-        return Comment.findByIdAndUpdate(postID, {$set: newComment});
+    async update(commentID, newComment) {
+        return Comment.findByIdAndUpdate(commentID, {$set: newComment});
     }
 }
 

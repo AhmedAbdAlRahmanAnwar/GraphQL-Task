@@ -16,6 +16,10 @@ input NewPostContent {
     text: String
 }
 
+input EditComment {
+    content: String!
+}
+
 type Query{
     posts: [Post]
     post(id:ID!) : Post
@@ -26,6 +30,8 @@ type Query{
 type Mutation{
     createPost(title: String!, text: String!): Post!
     updatePost(id:ID!, content: NewPostContent!): Post!
-    deletePost(id:ID!): Boolean!
-    addComment(postId: ID!, content: String!) : [Comment]
+    deletePost(id:ID!): Boolean
+    addComment(postId: ID!, content: String!) : Comment!
+    updateComment(id:ID!, content: EditComment!): Comment!
+    deleteComment(id:ID!): Boolean
 }

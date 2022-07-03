@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_URL)
     .then(() => {
         console.log("DB connected successfully");
-        server.listen().then(({ url }) => {
+        server.listen(7000).then(({ url }) => {
             console.log(`Server ready at ${url}`);
         });
     })
