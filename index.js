@@ -45,10 +45,15 @@ const resolvers = {
             const index = posts.findIndex(post => post.id == id);
             posts.splice(index, 1);
             return posts
+        },
+        updatePost: (_,{id,title,text}) => {
+            const post = posts.filter(post => post.id == id);
+            post.title = title;
+            post.text = text;
+            return post;
         }
     }
 };
-
 
 
 const server = new ApolloServer({

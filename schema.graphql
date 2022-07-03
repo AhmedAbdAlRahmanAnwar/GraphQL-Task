@@ -12,4 +12,5 @@
   type Mutation {
     createPost(id:ID,title: String,text: String): Post
     deletePost(id:ID): [Post]
+    updatePost(id:ID,title: String,text: String): Post
   }
